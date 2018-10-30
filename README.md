@@ -6,4 +6,4 @@ With the app you will be able to search venues for a specific artist, search for
 
 ### See below for a video of how my app interacts.
 
-[Justin's Screencacstify via Google Drive](https://drive.google.com/file/d/1M4YjKUTOlj5jyUt81rPQWwRt-fiQU3zF/view)
+[Justin's Screencacstify via Google Drive](https://drive.google.com/file/d/1N9sPBqHs7qL_H1h_nHCyyA-DCIUH4T98/view)
