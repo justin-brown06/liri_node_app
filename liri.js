@@ -26,11 +26,8 @@ function concertThis() {
 
             request(queryUrl, function (error, response, body) {
 
-                if (response.body = []) {
-                    console.log(chalk.gray("--------------------"));
-                    console.log(chalk.bold.redBright("This artist has no upcoming venues."));
-                    console.log(chalk.gray("--------------------"));
-                };
+                if (response.body === '[]\n')
+                    console.log(chalk.redBright("\nNo concerts available for this artist."));
 
                 // If the request is successful
                 if (!error && response.statusCode === 200) {
@@ -44,7 +41,8 @@ function concertThis() {
                         console.log(chalk.blueBright("Venue Date: ") + chalk.greenBright(moment(result[i].datetime, moment.ISO_8601).format("MM-DD-YYYY")));
                         console.log(chalk.gray("--------------------"));
                     };
-                };
+
+                }
             });
         });
 };
