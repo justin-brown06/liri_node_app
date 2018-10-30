@@ -32,7 +32,7 @@ function concertThis() {
                         console.log("--------------------");
                         console.log("Venue Name: " + result[i].venue.name);
                         console.log("Venue Location: " + result[i].venue.city + ", " + result[i].venue.region);
-                        console.log("Venue Date: " + moment(JSON.stringify(result[i].datetime), ["YYYY", moment.ISO_8601]).format("MM-DD-YYYY"));
+                        console.log("Venue Date: " + moment(result[i].datetime, moment.ISO_8601).format("MM-DD-YYYY"));
                         console.log("--------------------");
                     };
                 };
@@ -58,7 +58,6 @@ function spotifyThisSong() {
                 .catch(function (err) {
                     console.log(err)
                 });
-
         });
 };
 
