@@ -53,12 +53,14 @@ function spotifyThisSong() {
             spotify
                 .search({ type: 'track', query: songRes.userSong, limit: 3 })
                 .then(function (response) {
-                    console.log(chalk.gray("--------------------"));
-                    console.log(chalk.blueBright("Track Name: ") + chalk.greenBright(response.tracks.items[0].name));
-                    console.log(chalk.blueBright("Artist Name: ") + chalk.greenBright(response.tracks.items[0].artists[0].name));
-                    console.log(chalk.blueBright("Album Name: ") + chalk.greenBright(response.tracks.items[0].album.name));
-                    console.log(chalk.blueBright("URL Sample: ") + chalk.greenBright(response.tracks.items[0].external_urls.spotify));
-                    console.log(chalk.gray("--------------------"));
+                    for (var i = 0; i < response.tracks.items.length; i++) {
+                        console.log(chalk.gray("--------------------"));
+                        console.log(chalk.blueBright("Track Name: ") + chalk.greenBright(response.tracks.items[i].name));
+                        console.log(chalk.blueBright("Artist Name: ") + chalk.greenBright(response.tracks.items[i].artists[0].name));
+                        console.log(chalk.blueBright("Album Name: ") + chalk.greenBright(response.tracks.items[i].album.name));
+                        console.log(chalk.blueBright("URL Sample: ") + chalk.greenBright(response.tracks.items[i].external_urls.spotify));
+                        console.log(chalk.gray("--------------------"));
+                    };
                 })
                 .catch(function (err) {
                     console.log(err)
@@ -102,17 +104,26 @@ function movieThis() {
 
 function doWhatItSays() {
     inquirer
-        .prompt([{
-            type: "input",
-            message: chalk.inverse("Please tell me what to do: "),
-            name: "userSong"
-        }]).then(function (doItRes) {
-            console.log("You chose to do something!" + JSON.stringify(doItRes.userSong));
-            fs.readFile("./random.txt", "utf8",  (err, data) => {
-                if (err) {console.log(err)};
-                console.log(data);
+    fs.readFile("./random.txt", "utf8", (err, data) => {
+        if (err) { console.log(err) };
+        console.log(data);
+
+        spotify
+            .search({ type: 'track', query: "I Want it That Way", limit: 3 })
+            .then(function (response) {
+                for (var i = 0; i < response.tracks.items.length; i++) {
+                    console.log(chalk.gray("--------------------"));
+                    console.log(chalk.blueBright("Track Name: ") + chalk.greenBright(response.tracks.items[i].name));
+                    console.log(chalk.blueBright("Artist Name: ") + chalk.greenBright(response.tracks.items[i].artists[0].name));
+                    console.log(chalk.blueBright("Album Name: ") + chalk.greenBright(response.tracks.items[i].album.name));
+                    console.log(chalk.blueBright("URL Sample: ") + chalk.greenBright(response.tracks.items[i].external_urls.spotify));
+                    console.log(chalk.gray("--------------------"));
+                };
+            })
+            .catch(function (err) {
+                console.log(err)
             });
-        });
+    });
 };
 
 inquirer
