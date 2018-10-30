@@ -5,6 +5,9 @@ const keys = require("./keys");
 const Spotify = require("node-spotify-api");
 const request = require("request");
 const moment = require("moment");
+const chalk = require("chalk");
+const fs = require("fs");
+const file = require("file-system");
 
 var spotify = new Spotify(keys.spotify);
 
@@ -14,7 +17,7 @@ function concertThis() {
     inquirer
         .prompt([{
             type: "input",
-            message: "Please search an artist for venues:",
+            message: chalk.inverse("Please search an artist for venues:"),
             name: "userArtist"
         }]).then(function (concertRes) {
             artist = concertRes.userArtist;
@@ -29,11 +32,11 @@ function concertThis() {
                     var result = JSON.parse(body);
 
                     for (var i = 0; i < result.length; i++) {
-                        console.log("--------------------");
-                        console.log("Venue Name: " + result[i].venue.name);
-                        console.log("Venue Location: " + result[i].venue.city + ", " + result[i].venue.region);
-                        console.log("Venue Date: " + moment(result[i].datetime, moment.ISO_8601).format("MM-DD-YYYY"));
-                        console.log("--------------------");
+                        console.log(chalk.gray("--------------------"));
+                        console.log(chalk.blueBright("Venue Name: ") + chalk.greenBright(result[i].venue.name));
+                        console.log(chalk.blueBright("Venue Location: ") + chalk.greenBright(result[i].venue.city + ", " + result[i].venue.region));
+                        console.log(chalk.blueBright("Venue Date: ") + chalk.greenBright(moment(result[i].datetime, moment.ISO_8601).format("MM-DD-YYYY")));
+                        console.log(chalk.gray("--------------------"));
                     };
                 };
             });
@@ -44,16 +47,18 @@ function spotifyThisSong() {
     inquirer
         .prompt([{
             type: "input",
-            message: "Please search a song to spotify:",
+            message: chalk.inverse("Please search a song to spotify:"),
             name: "userSong"
         }]).then(function (songRes) {
             spotify
-                .search({ type: 'track', query: songRes.userSong, limit: 3})
+                .search({ type: 'track', query: songRes.userSong, limit: 3 })
                 .then(function (response) {
-                    console.log(response.tracks.items[0].name);
-                    console.log(response.tracks.items[0].artists[0].name);
-                    console.log(response.tracks.items[0].album.name);
-                    console.log(response.tracks.items[0].external_urls.spotify);
+                    console.log(chalk.gray("--------------------"));
+                    console.log(chalk.blueBright("Track Name: ") + chalk.greenBright(response.tracks.items[0].name));
+                    console.log(chalk.blueBright("Artist Name: ") + chalk.greenBright(response.tracks.items[0].artists[0].name));
+                    console.log(chalk.blueBright("Album Name: ") + chalk.greenBright(response.tracks.items[0].album.name));
+                    console.log(chalk.blueBright("URL Sample: ") + chalk.greenBright(response.tracks.items[0].external_urls.spotify));
+                    console.log(chalk.gray("--------------------"));
                 })
                 .catch(function (err) {
                     console.log(err)
@@ -65,7 +70,7 @@ function movieThis() {
     inquirer
         .prompt([{
             type: "input",
-            message: "Please search for a desired movie:",
+            message: chalk.inverse("Please search for a desired movie:"),
             name: "userMovie"
         }]).then(function (resMovie) {
             var movieName = resMovie.userMovie
@@ -79,14 +84,16 @@ function movieThis() {
                 if (!error && response.statusCode === 200) {
 
                     // Display the information of the movie.
-                    console.log("Movie Title: " + JSON.parse(body).Title);
-                    console.log("Release Year: " + JSON.parse(body).Year);
-                    console.log("IMDB Rating: " + JSON.parse(body).Ratings[1].Value);
-                    console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[2].Value);
-                    console.log("Country of Production: " + JSON.parse(body).Country);
-                    console.log("Language of Movie: " + JSON.parse(body).Language);
-                    console.log("Plot of the movie: " + JSON.parse(body).Plot);
-                    console.log("Actors in the: " + JSON.parse(body).Actors);
+                    console.log(chalk.gray("--------------------"));
+                    console.log(chalk.blueBright("Movie Title: ") + chalk.greenBright(JSON.parse(body).Title));
+                    console.log(chalk.blueBright("Release Year: ") + chalk.greenBright(JSON.parse(body).Year));
+                    console.log(chalk.blueBright("IMDB Rating: ") + chalk.greenBright(JSON.parse(body).Ratings[1].Value));
+                    console.log(chalk.blueBright("Rotten Tomatoes Rating: ") + chalk.greenBright(JSON.parse(body).Ratings[2].Value));
+                    console.log(chalk.blueBright("Country of Production: ") + chalk.greenBright(JSON.parse(body).Country));
+                    console.log(chalk.blueBright("Language of Movie: ") + chalk.greenBright(JSON.parse(body).Language));
+                    console.log(chalk.blueBright("Plot of the movie: ") + chalk.greenBright(JSON.parse(body).Plot));
+                    console.log(chalk.blueBright("Actors in the: ") + chalk.greenBright(JSON.parse(body).Actors));
+                    console.log(chalk.gray("--------------------"));
                 };
             });
 
@@ -97,11 +104,14 @@ function doWhatItSays() {
     inquirer
         .prompt([{
             type: "input",
-            message: "Please tell me what to do: ",
+            message: chalk.inverse("Please tell me what to do: "),
             name: "userSong"
         }]).then(function (doItRes) {
-            console.log("You chose to do something!" + JSON.stringify(doItRes));
-
+            console.log("You chose to do something!" + JSON.stringify(doItRes.userSong));
+            fs.readFile("./random.txt", "utf8",  (err, data) => {
+                if (err) {console.log(err)};
+                console.log(data);
+            });
         });
 };
 
@@ -109,8 +119,8 @@ inquirer
     .prompt([
         {
             type: "list",
-            message: "Choose an option to search: ",
-            choices: ["concert-this", "spotify-this-song", "movie-this", "do-what-it-says"],
+            message: chalk.inverse("Choose an option to search: "),
+            choices: [("concert-this"), "spotify-this-song", "movie-this", "do-what-it-says"],
             name: "userOption"
         }
     ]).then(function (inqRes) {

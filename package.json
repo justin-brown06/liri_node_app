@@ -4,7 +4,10 @@
   "description": "",
   "main": "keys.js",
   "dependencies": {
+    "chalk": "^2.4.1",
     "dotenv": "^6.1.0",
+    "file-system": "^2.2.2",
+    "fs": "0.0.1-security",
     "inquirer": "^6.2.0",
     "moment": "^2.22.2",
     "node-spotify-api": "^1.0.7",
