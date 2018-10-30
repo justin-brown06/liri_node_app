@@ -26,6 +26,12 @@ function concertThis() {
 
             request(queryUrl, function (error, response, body) {
 
+                if (response.body = []) {
+                    console.log(chalk.gray("--------------------"));
+                    console.log(chalk.bold.redBright("This artist has no upcoming venues."));
+                    console.log(chalk.gray("--------------------"));
+                };
+
                 // If the request is successful
                 if (!error && response.statusCode === 200) {
 
